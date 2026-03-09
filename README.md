@@ -455,16 +455,22 @@ AAE5303_Assignment_2
 ├── README.md                    # This report
 ├── requirements.txt             # Python dependencies
 ├── figures/
-│   └── trajectory_evaluation.png
-├── output/
+│   └── Trajectory_Evaluation.png
+├── Output/
 │   └── evaluation_report.json
 ├── scripts/
+│   ├── generate_report_figures.py
 │   └── evaluate_vo_accuracy.py
 ├── docs/
+│   ├── CameraTrajectory.txt
+│   ├── KeyFrameTrajectory.txt
+│   ├── Leadership_Final_Submission.json
+│   ├── metrics.json
 │   └── camera_config.yaml
 └── leaderboard/
     ├── README.md
     ├── LEADERBOARD_SUBMISSION_GUIDE.md
+    ├── ORB_SLAM3_TIPS.md
     └── submission_template.json
 ```
 
