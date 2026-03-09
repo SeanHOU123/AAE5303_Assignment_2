@@ -1,0 +1,16 @@
+{
+  "ate_mean_m": 38.722322,
+  "ate_rmse_m": 73.292985,
+  "ate_std_m": 62.228960,
+  "completeness_pct": 89.82,
+  "delta_m": 10.0,
+  "gt_poses": 1955,
+  "matched_poses": 1756,
+  "rpe_rot_drift_deg_per_100m": 121.100712,
+  "rpe_rot_mean_deg": 12.110071,
+  "rpe_rot_rmse_deg": 22.959505,
+  "rpe_trans_drift_m_per_m": 1.921764,
+  "rpe_trans_mean_m": 19.217638,
+  "rpe_trans_rmse_m": 33.312446,
+  "t_max_diff_s": 0.1
+}
