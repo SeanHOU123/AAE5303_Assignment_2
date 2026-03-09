@@ -502,8 +502,6 @@ python3 scripts/evaluate_vo_accuracy.py \
 ...
 ```
 
----
-
 ### D. Native evo Commands (Recommended)
 
 If you prefer to run evo directly (no custom scripts), use:
@@ -529,6 +527,7 @@ evo_rpe tum ground_truth.txt CameraTrajectory.txt \
   --pose_relation angle_deg -va
 ```
 
+---
 
 <div align="center">
 
