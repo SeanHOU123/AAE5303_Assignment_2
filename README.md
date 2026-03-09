@@ -39,11 +39,11 @@ This report presents the implementation and evaluation of **Monocular Visual Odo
 
 | Metric | Value | Description |
 |--------|-------|-------------|
-| **ATE RMSE** | **132.1547 m** | Global accuracy after Sim(3) alignment (scale corrected) |
-| **RPE Trans Drift** | **2.8701 m/m** | Translation drift rate (mean error per meter, delta=10 m) |
-| **RPE Rot Drift** | **173.3319 deg/100m** | Rotation drift rate (mean angle per 100 m, delta=10 m) |
-| **Completeness** | **87.01%** | Matched poses / total ground-truth poses (1701 / 1955) |
-| **Estimated poses** | 2,826 | Trajectory poses in `CameraTrajectory.txt` |
+| **ATE RMSE** | **73.292985 m** | Global accuracy after Sim(3) alignment (scale corrected) |
+| **RPE Trans Drift** | **1.921764  m/m** | Translation drift rate (mean error per meter, delta=10 m) |
+| **RPE Rot Drift** | **121.100712 deg/100m** | Rotation drift rate (mean angle per 100 m, delta=10 m) |
+| **Completeness** | **89.82** | Matched poses / total ground-truth poses (1756 / 1955) |
+| **Estimated poses** | 3,085 | Trajectory poses in `CameraTrajectory.txt` |
 
 ---
 
@@ -325,24 +325,24 @@ VISUAL ODOMETRY EVALUATION RESULTS
 ================================================================================
 
 Ground Truth: RTK trajectory (1,955 poses)
-Estimated:    ORB-SLAM3 camera trajectory (2,826 poses)
-Matched Poses: 1,701 / 1,955 (87.01%)  ← Completeness
+Estimated:    ORB-SLAM3 camera trajectory (3,085 poses)
+Matched Poses: 1,756 / 1,955 (89.82%)  ← Completeness
 
 METRIC 1: ATE (Absolute Trajectory Error)
 ────────────────────────────────────────
-RMSE:   132.1547 m
-Mean:   114.6344 m
-Std:    65.7558 m
+RMSE:   73.292985 m
+Mean:   38.722322 m
+Std:    62.228960 m
 
 METRIC 2: RPE Translation Drift (distance-based, delta=10 m)
 ────────────────────────────────────────
-Mean translational RPE over 10 m: 28.7014 m
-Translation drift rate:           2.8701 m/m
+Mean translational RPE over 10 m: 19.217638 m
+Translation drift rate:           1.921764 m/m
 
 METRIC 3: RPE Rotation Drift (distance-based, delta=10 m)
 ────────────────────────────────────────
-Mean rotational RPE over 10 m: 17.3332 deg
-Rotation drift rate:        173.3319 deg/100m
+Mean rotational RPE over 10 m: 12.110071 deg
+Rotation drift rate:        121.100712 deg/100m
 
 ================================================================================
 ```
@@ -351,19 +351,19 @@ Rotation drift rate:        173.3319 deg/100m
 
 | Parameter | Value |
 |-----------|-------|
-| **Sim(3) scale correction** | 6.5944 |
-| **Sim(3) translation** | [-45.426, -95.559, 36.060] m |
+| **Sim(3) scale correction** | 0.9792 |
+| **Sim(3) translation** | [-23.650, -24.893, 8.885] m |
 | **Association threshold** | \(t_{max\_diff}\) = 0.1 s |
-| **Association rate (Completeness)** | 87.01% |
+| **Association rate (Completeness)** | 89.82% |
 
 ### Performance Analysis
 
 | Metric | Value | Grade | Interpretation |
 |--------|-------|-------|----------------|
-| **ATE RMSE** | 132.15 m | F | Very large global error after alignment |
-| **RPE Trans Drift** | 2.87 m/m | D | Large local drift per traveled distance |
-| **RPE Rot Drift** | 173.33 deg/100m | F | Severe orientation drift |
-| **Completeness** | 87.01% | B | Many poses can be evaluated, but accuracy is low |
+| **ATE RMSE** | 73.29 m | D | Large global error after alignment |
+| **RPE Trans Drift** | 1.92 m/m | C | Moderate local drift per traveled distance |
+| **RPE Rot Drift** | 121.10 deg/100m | D | Significant orientation drift |
+| **Completeness** | 89.82% | B | Many poses can be evaluated, but accuracy is low |
 
 ---
 
@@ -371,7 +371,9 @@ Rotation drift rate:        173.3319 deg/100m
 
 ### Trajectory Comparison
 
-![Trajectory Evaluation](figures/trajectory_evaluation.png)
+
+<img width="2400" height="2400" alt="Trajectory Comparison" src="https://github.com/user-attachments/assets/366af5c3-e267-4db6-8ed9-731cf470df79" />
+
 
 This figure is generated from the same inputs used for evaluation (`ground_truth.txt` and `CameraTrajectory.txt`) and includes:
 
@@ -388,23 +390,23 @@ This figure is generated from the same inputs used for evaluation (`ground_truth
 
 ### Strengths
 
-1. **High evaluation coverage**: 87% completeness indicates that a large portion of the ground-truth poses can be associated and evaluated.
+1. **High evaluation coverage**: 89.82% completeness indicates that a large portion of the ground-truth poses can be associated and evaluated.
 
 2. **End-to-end pipeline**: The system produces a usable TUM trajectory and can be evaluated reproducibly with standard tooling.
 
 ### Limitations
 
-1. **Tracking Instability**: Frequent "Fail to track local map!" errors observed, leading to multiple map resets (2 maps created).
+1. **Tracking Instability**: Occasional "Fail to track local map!" errors observed, which may lead to map resets during challenging segments.
 
-2. **Large drift**: Both translation and rotation drift rates are high, indicating unstable local tracking and/or poor geometric constraints.
+2. **Moderate drift**: Translation drift (1.92 m/m) and rotation drift (121.10 deg/100m) indicate room for improvement, indicating unstable local tracking and/or poor geometric constraints.
 
-3. **No loop closure**: Pure VO mode without loop closure or relocalization accumulates drift over long trajectories.
+3. **No loop closure**: Pure VO mode without loop closure or relocalization accumulates drift over long trajectories (~1.9 km).
 
 ### Error Sources
 
 1. **Fast UAV Motion**: Aggressive flight maneuvers cause motion blur and large inter-frame displacements.
 
-2. **Feature Extraction**: Default ORB parameters (1500 features) may be insufficient for high-resolution images.
+2. **Feature Extraction**: Default ORB parameters (1500 features) may be insufficient for high-resolution images (2448×2048).
 
 3. **Calibration Accuracy**: Camera intrinsics and distortion parameters affect pose estimation quality.
 
@@ -415,9 +417,9 @@ This figure is generated from the same inputs used for evaluation (`ground_truth
 This assignment demonstrates monocular Visual Odometry implementation using ORB-SLAM3 on UAV aerial imagery. Key findings:
 
 1. ✅ **System Operation**: ORB-SLAM3 successfully processes 3,833 images over 1.9 km trajectory
-2. ✅ **Evaluation coverage**: 87.01% completeness shows that many poses can be evaluated against RTK ground truth
-3. ⚠️ **Tracking stability**: Frequent tracking failures indicate the need for parameter tuning and stronger robustness measures
-4. ❌ **Accuracy**: The current baseline exhibits very large global error and drift rates on this sequence
+2. ✅ **Evaluation coverage**: 89.82% completeness shows that many poses can be evaluated against RTK ground truth
+3. ⚠️ **Tracking stability**: Occasional tracking failures indicate the need for parameter tuning and stronger robustness measures
+4. ⚠️ **Accuracy**: The current baseline exhibits 	large global error (ATE 73.29 m) and moderate drift rates on this sequence
 
 ### Recommendations for Improvement
 
@@ -449,7 +451,7 @@ This assignment demonstrates monocular Visual Odometry implementation using ORB-
 ### A. Repository Structure
 
 ```
-AAE5303_assignment2_orbslam3_demo-/
+AAE5303_Assignment_2
 ├── README.md                    # This report
 ├── requirements.txt             # Python dependencies
 ├── figures/
@@ -491,6 +493,17 @@ python3 scripts/evaluate_vo_accuracy.py \
     --json-out evaluation_results/metrics.json
 ```
 
+### C. Output Trajectory Format (TUM)
+
+```
+# timestamp x y z qx qy qz qw
+1698132964.499888 0.0000000 0.0000000 0.0000000 -0.0000000 -0.0000000 -0.0000000 1.0000000
+1698132964.599976 -0.0198950 0.0163751 -0.0965251 -0.0048082 0.0122335 0.0013237 0.9999127
+...
+```
+
+---
+
 ### D. Native evo Commands (Recommended)
 
 If you prefer to run evo directly (no custom scripts), use:
@@ -516,16 +529,6 @@ evo_rpe tum ground_truth.txt CameraTrajectory.txt \
   --pose_relation angle_deg -va
 ```
 
-### C. Output Trajectory Format (TUM)
-
-```
-# timestamp x y z qx qy qz qw
-1698132964.499888 0.0000000 0.0000000 0.0000000 -0.0000000 -0.0000000 -0.0000000 1.0000000
-1698132964.599976 -0.0198950 0.0163751 -0.0965251 -0.0048082 0.0122335 0.0013237 0.9999127
-...
-```
-
----
 
 <div align="center">
 
