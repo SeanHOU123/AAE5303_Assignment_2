@@ -1,0 +1,11 @@
+{
+  "group_name": "GOGOGO",
+  "project_private_repo_url": "https://github.com/SeanHOU123/AAE5303_Assignment_2",
+  "metrics": {
+    "ate_rmse_m": 73.292985,
+    "rpe_trans_drift_m_per_m": 1.921764,
+    "rpe_rot_drift_deg_per_100m": 121.100712,
+    "completeness_pct": 89.82
+  }
+}
+
